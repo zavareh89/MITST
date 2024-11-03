@@ -2,7 +2,7 @@
 
 MITST is a novel, attention-based neural network framework for predicting blood glucose (BG) levels in ICU patients. It leverages heterogeneous clinical time-series data, such as lab results, medications, and vital signs, to capture the complex dynamics of ICU patients. MITST's modular, hierarchical Transformer architecture processes multi-source and irregular time-series data, offering a scalable and adaptable approach for accurate BG level predictions and other ICU prediction tasks. Below is an illustration of the high-level architecture.
 
-![MITST Architecture](./Appendix.pdf) <!-- Replace with actual path -->
+![MITST Architecture](./Appendix.png)
 
 ---
 
