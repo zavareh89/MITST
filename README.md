@@ -1,6 +1,6 @@
 # MITST: Multi-source Irregular Time-Series Transformer for ICU Glucose Level Prediction
 
-MITST is a novel, attention-based neural network framework for predicting blood glucose (BG) levels in ICU patients. It leverages heterogeneous clinical time-series data, such as lab results, medications, and vital signs, to capture the complex dynamics of ICU patients. MITST's modular, hierarchical Transformer architecture processes multi-source and irregular time-series data, offering a scalable and adaptable approach for accurate BG level predictions and other ICU prediction tasks. Below is an illustration of the high-level architecture.
+**MITST** (Multi-source Irregular Time-Series Transformer) is a novel machine learning model designed to predict blood glucose (BG) levels in ICU patients using complex, multi-source electronic health record (EHR) data. MITST's modular, hierarchical Transformer architecture processes multi-source and irregular time-series data (e.g., lab results, medications, vital signs), capturing both short-term and long-term temporal dependencies in a flexible way. It offers a scalable and adaptable approach for accurate BG level predictions and other ICU prediction tasks. Below is an illustration of the high-level architecture.
 
 ![MITST Architecture](./Appendix.png)
 
@@ -21,38 +21,45 @@ To set up and run the code for the MITST model, follow the steps below.
    ```bash
    pip install -r requirements.txt
 
-3. **Update Patient Table**  
-    Update the `patient` table to include previous and next visits (this will be used for concatenation of consecutive stays of a single patient in a specific hospital). Use the command below:
+3. **Update Patient Table**
+   Update the `patient` table in the database to include previous and next visits. This will be used for concatenating consecutive ICU stays for a single patient within a specific hospital. Run the following command in your SQL environment:  
 
     ```bash
    psql -U your_username -d your_db_name -f concepts/add_previous_next_visits.sql
 
 
 ## Running the Code
-Once the environment is set up, activate it and navigate to the `code/` directory. Update the database parameters if necessary by adjusting `db_params` values including `dbname`, `user`, and `password` in the `db_conn.py` file.
+Activate your virtual environment and navigate to the `code/` directory. Update `db_params` dictionary in the `db_conn.py` file with your database information (if necessary):
+```python
+db_params = {
+    "dbname": "your_db_name",
+    "user": "your_username",
+    "password": "your_password"
+}
+```
 
-1. **Preprocess Database** 
-    The information from each stay is extracted and at the end, they are outputed as a JSONL file, where each line corresponds to a single stay:
+1. **Extract Information from Each Stay** 
+    Run the following script to extract data from each ICU stay and save it as individual JSON records. Each line in the final JSONL file represents one stay:
     ```bash
    python3 preprocess_database.py
 
-2. **Concatenate Stays and Process Labels** 
-    Consecutive stays for each patient are concatenated. Also, only the stays with at least six BG measurements are included. This step creates another JSONL file with the processed data:
+2. **Concatenate Consecutive  Stays and Process Labels** 
+    Use the following script to concatenate consecutive ICU stays for the same patient. Only stays with at least six BG measurements are included in the final dataset:
     ```bash
    python3 concatenate_admissions_and_preprocess_labels.py
 
 3. **Feature Generation** 
-    The data is transformed into a format compatible with the MITST model:
+    Now, transform the data to a format compatible with the MITST model by running:
     ```bash
    python3 feature_generation.py
 
 4. **Train the MITST Model** 
-    Then, the MNIST model is trained using generated features:
+    Once the data is prepared, train the MITST model using:
     ```bash
    python3 train.py
 
 5. **Model Evaluation** 
-    Finally, the model is evaluated on test set and AUROC and AUPRC are computed for each class:
+    Finally, after training, evaluate the model on the test set to compute AUROC and AUPRC metrics for each class:
     ```bash
    python3 evaluation.py
 
