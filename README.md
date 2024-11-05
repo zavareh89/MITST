@@ -70,7 +70,7 @@ If you find MITST helpful in your research, please consider citing our preprint:
 @article{mehdizavareh2024mitst,
   title={Enhancing Glucose Level Prediction of ICU Patients through Irregular Time-Series Analysis and Integrated Representation},
   author={Mehdizavareh, Hadi and Khan, Arijit and Cichosz, Simon Lebech},
-  journal={arXiv preprint arXiv:2400.00000},
+  journal={arXiv preprint arXiv:2411.01418},
   year={2024}
 }
 ```
